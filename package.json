@@ -1,0 +1,8 @@
+{
+  "name": "gympoint",
+  "version": "1.0.0",
+  "description": "Gerenciador de Academia",
+  "main": "index.js",
+  "author": "Paulo Humberto",
+  "license": "MIT"
+}
