@@ -15,9 +15,9 @@ module.exports = {
     SharedArrayBuffer: 'readonly',
   },
 
-  parseOptions: {
+  parserOptions: {
     ecmaVersion: 2018,
-    sourceTeyp: 'module',
+    soureType: 'module',
   },
 
   rules: {
@@ -25,6 +25,6 @@ module.exports = {
     "class-methods-use-this": "off",
     "no-param-reassign": "off",
     "camelcase": "off",
-    "no_unused-vars": ["error", { "argsIgnorePattern": "next"}],
-  }
+    "no-unused-vars": ["error", { "argsIgnorePattern": "next"}],
+  },
 }
