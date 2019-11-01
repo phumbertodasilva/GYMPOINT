@@ -54,7 +54,7 @@ class StudentController {
 
     const student = await Student.findOne({ where: { email: req.body.email } });
 
-    if (!student){
+    if (!student) {
       return res.status(400).json({ error: 'Student not found.' });
     }
 
