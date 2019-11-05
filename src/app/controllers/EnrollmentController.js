@@ -4,6 +4,9 @@ import Enrollment from '../models/Enrollment';
 import Plan from '../models/Plan';
 import Student from '../models/Student';
 
+import EnrollmentMail from '../jobs/EnrollmentMail';
+import Queue from '../../lib/Queue';
+
 class EnrollmentController {
   async index(req, res) {
     const enrollments = await Enrollment.findAll();
@@ -36,15 +39,34 @@ class EnrollmentController {
 
     const startDate = startOfHour(parseISO(start_date));
 
-    const endDate = addMonths(startDate, plan.duration);
+    const end_date = addMonths(startDate, plan.duration);
     const price = plan.price * plan.duration;
 
     const enrollment = await Enrollment.create({
       student_id,
       plan_id,
       start_date: startDate,
-      end_date: endDate,
+      end_date,
       price,
+    });
+
+    const enrollmentMail = await Enrollment.findByPk(enrollment.id, {
+      include: [
+        {
+          model: Student,
+          as: 'student',
+          attributes: ['name', 'email'],
+        },
+        {
+          model: Plan,
+          as: 'plan',
+          attributes: ['title', 'duration'],
+        },
+      ],
+    });
+
+    await Queue.add(EnrollmentMail.key, {
+      enrollment: enrollmentMail,
     });
 
     return res.json(enrollment);
